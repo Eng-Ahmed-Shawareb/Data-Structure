@@ -37,12 +37,12 @@ private:
   void delete_next(Node<T> *previous) {
     if (!previous->next)
       return;
-    
+
     Node<T> *to_delete = previous->next; // Store the pointer first
-    
+
     if (to_delete == tail)
       tail = previous;
-      
+
     previous->next = to_delete->next;
     delete_node(to_delete); // This frees memory AND decrements length
   }
@@ -55,20 +55,21 @@ public:
   ShawarebSingleLinkedList(const ShawarebSingleLinkedList<T> &otherList)
       : head(nullptr), tail(nullptr), length(0) {
     for (Node<T> *current = otherList.head; current; current = current->next) {
-        insert_end(current->data);
+      insert_end(current->data);
     }
   }
 
   // Time: O(n+m), Space: O(m)  m->length of otherList
   // Assignment operator
-  ShawarebSingleLinkedList<T>& operator=(const ShawarebSingleLinkedList<T> &otherList){
-    if(&otherList == this)
-        return *this;
-    
+  ShawarebSingleLinkedList<T> &
+  operator=(const ShawarebSingleLinkedList<T> &otherList) {
+    if (&otherList == this)
+      return *this;
+
     clear();
 
     for (Node<T> *current = otherList.head; current; current = current->next) {
-        insert_end(current->data);
+      insert_end(current->data);
     }
 
     return *this;
@@ -163,7 +164,7 @@ public:
   }
 
   // Time: O(1), Space: O(1)
-  void delete_first() {
+  void delete_front() {
     if (head) {
       Node<T> *current = head;
       head = head->next;
@@ -174,9 +175,9 @@ public:
   }
 
   // Time: O(n), Space: O(1)
-  void delete_last() {
+  void delete_end() {
     if (length <= 1) {
-      delete_first();
+      delete_front();
       return;
     }
 
@@ -194,7 +195,7 @@ public:
     assert(n >= 1 && n <= length);
 
     if (n == 1) {
-      delete_first();
+      delete_front();
       return;
     }
 
@@ -261,7 +262,8 @@ public:
   }
 
   // Time: O(n), Space: O(1)
-  // Removes all duplicate values (elements that appear more than once). Requires: list must be sorted
+  // Removes all duplicate values (elements that appear more than once).
+  // Requires: list must be sorted
   void remove_all_duplicates() {
     if (length <= 1)
       return;
@@ -279,7 +281,7 @@ public:
         last_value = current->data;
         if (previous == nullptr) {
           Node<T> *next = current->next;
-          delete_first();
+          delete_front();
           current = next;
         } else {
           previous->next = current->next;
@@ -299,7 +301,7 @@ public:
   }
 
   // Time: O(n), Space: O(1)
-  void clear(){
+  void clear() {
     while (head) {
       Node<T> *next = head->next;
       delete_node(head);
@@ -310,9 +312,7 @@ public:
 
   // Time: O(n), Space: O(1)
   // Destructor - deallocates all nodes
-  ~ShawarebSingleLinkedList() {
-    clear();
-  }
+  ~ShawarebSingleLinkedList() { clear(); }
 };
 
 #endif
