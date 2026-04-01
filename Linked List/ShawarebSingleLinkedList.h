@@ -1,3 +1,15 @@
+/**
+ * ---------------------------------------------------------------------------*
+ * | File Name   : ShawarebSingleLinkedList.h                                |*
+ * |                                                                         |* 
+ * | Author      : Ahmed Shawareb                                            |*
+ * |                                                                         |* 
+ * | Email       : eng.ahmedshawareb@gmail.com                               |*
+ * |                                                                         |*
+ * | Description : Single linked list implementation for Data Structures.    |*
+ * ---------------------------------------------------------------------------*
+**/
+
 #ifndef SHAWAREB_SINGLE_LINKED_LIST_H
 #define SHAWAREB_SINGLE_LINKED_LIST_H
 

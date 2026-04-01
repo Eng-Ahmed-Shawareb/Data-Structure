@@ -1,3 +1,15 @@
+/**
+ * ---------------------------------------------------------------------------*
+ * | File Name   : ShawarebSingleLinkedList.h                                |*
+ * |                                                                         |* 
+ * | Author      : Ahmed Shawareb                                            |*
+ * |                                                                         |* 
+ * | Email       : eng.ahmedshawareb@gmail.com                               |*
+ * |                                                                         |*
+ * | Description : Vector implementation for Data Structures.                |*
+ * ---------------------------------------------------------------------------*
+**/
+
 #ifndef SHAWAREB_VECTOR_H
 #define SHAWAREB_VECTOR_H
 
@@ -12,8 +24,6 @@ private:
   int size = 0;
   int capacity = 4;
   T *arr = nullptr;
-
-  using iterator = T *;
 
   // Time: O(n), Space: O(n)
   // Doubles capacity and reallocates storage when full
@@ -110,12 +120,6 @@ public:
 
   // Time: O(1), Space: O(1)
   T get_back() const { return arr[size - 1]; }
-
-  // Time: O(1), Space: O(1)
-  iterator begin() const { return arr; }
-
-  // Time: O(1), Space: O(1)
-  iterator end() const { return arr + size; }
 
   // Time: O(1), Space: O(1)
   void pop_back() {
