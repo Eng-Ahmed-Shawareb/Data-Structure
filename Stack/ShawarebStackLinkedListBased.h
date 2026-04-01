@@ -1,6 +1,6 @@
 /**
  * ---------------------------------------------------------------------------*
- * | File Name   : ShawarebSingleLinkedList.h                                |*
+ * | File Name   : ShawarebStackLinkedListBased.h                            |*
  * |                                                                         |* 
  * | Author      : Ahmed Shawareb                                            |*
  * |                                                                         |* 

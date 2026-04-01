@@ -1,6 +1,6 @@
 /**
  * ---------------------------------------------------------------------------*
- * | File Name   : ShawarebSingleLinkedList.h                                |*
+ * | File Name   : ShawarebDoubleLinkedList.h                                |*
  * |                                                                         |* 
  * | Author      : Ahmed Shawareb                                            |*
  * |                                                                         |* 

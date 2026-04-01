@@ -1,6 +1,6 @@
 /**
  * ---------------------------------------------------------------------------*
- * | File Name   : ShawarebSingleLinkedList.h                                |*
+ * | File Name   : ShawarebVector.h                                          |*
  * |                                                                         |* 
  * | Author      : Ahmed Shawareb                                            |*
  * |                                                                         |* 
