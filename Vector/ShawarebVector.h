@@ -138,7 +138,7 @@ public:
   }
 
   // Time: O(1), Space: O(1)
-  bool empty() const { return (size == 0); }
+  bool is_empty() const { return (size == 0); }
 
   // Time: O(1), Space: O(1)
   // Subscript operator returns reference for direct element access

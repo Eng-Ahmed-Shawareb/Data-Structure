@@ -27,7 +27,7 @@ public:
 
   Node(const T &d) : data(d) {}
   ~Node() {
-    cout << "Destroy value: " << data << " at adress: " << this << endl;
+    cout << "Destroy value: " << data << " at address: " << this << endl;
   }
 };
 

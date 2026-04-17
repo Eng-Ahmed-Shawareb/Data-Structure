@@ -46,14 +46,14 @@ public:
   // Time: O(1), Space: O(1)
   // Removes and returns element from front of queue
   T dequeue() {
-    assert(!isEmpty());
+    assert(!is_empty());
     T value = list.get_nth(1)->data;
     list.delete_front();
     return value;
   }
 
   // Time: O(1), Space: O(1)
-  bool isEmpty() { return list.isEmpty(); }
+  bool is_empty() { return list.is_empty(); }
 };
 
 #endif

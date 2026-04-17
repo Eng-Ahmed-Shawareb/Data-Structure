@@ -27,7 +27,7 @@ public:
   Node<T> *next;
   Node(const T &d) : data(d) { next = nullptr; }
   ~Node() {
-    cout << "Destroy value: " << data << " at adress: " << this << endl;
+    cout << "Destroy value: " << data << " at address: " << this << endl;
   }
 };
 
@@ -320,6 +320,11 @@ public:
       head = next;
     }
     tail = nullptr;
+  }
+
+  // Time: O(1), Space: O(1)
+  bool is_empty(){
+    return head == nullptr;
   }
 
   // Time: O(n), Space: O(1)

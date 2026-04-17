@@ -25,7 +25,7 @@ public:
   Node<T> *next;
   Node(const T &d) : data(d) { next = nullptr; }
   ~Node() {
-    cout << "Destroy value: " << data << "at adress: " << this << endl;
+    cout << "Destroy value: " << data << "at address: " << this << endl;
   }
 };
 
@@ -103,12 +103,12 @@ public:
   }
 
   // Time: O(1), Space: O(1)
-  bool isEmpty() { return !head; }
+  bool is_empty() { return !head; }
 
   // Time: O(1), Space: O(1)
   // Removes and returns top element from stack
   T pop() {
-    assert(!isEmpty());
+    assert(!is_empty());
 
     T data = head->data;
     Node<T> *next = head->next;
