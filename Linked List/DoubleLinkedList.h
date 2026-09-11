@@ -1,6 +1,6 @@
 /**
  * ---------------------------------------------------------------------------*
- * | File Name   : ShawarebDoubleLinkedList.h                                |*
+ * | File Name   : DoubleLinkedList.h                                        |*
  * |                                                                         |* 
  * | Author      : Ahmed Shawareb                                            |*
  * |                                                                         |* 
@@ -10,37 +10,37 @@
  * ---------------------------------------------------------------------------*
 **/
 
-#ifndef SHAWAREB_DOUBLE_LINKED_LIST
-#define SHAWAREB_DOUBLE_LINKED_LIST
+#ifndef DOUBLE_LINKED_LIST
+#define DOUBLE_LINKED_LIST
 
-#include <cassert>
 #include <iostream>
 using namespace std;
 
 template <class T>
-// Node for doubly linked list with forward and backward pointers
+// Represents a list node with links to the next and previous nodes.
 class Node {
 public:
   T data;
   Node<T> *next = nullptr;
   Node<T> *previous = nullptr;
 
+  // Creates a node containing the given value.
   Node(const T &d) : data(d) {}
+  // Displays information about the node being destroyed.
   ~Node() {
     cout << "Destroy value: " << data << " at address: " << this << endl;
   }
 };
 
 template <class T>
-// Doubly linked list implementation with bidirectional traversal
-class ShawarebDoubleLinkedList {
+// Stores elements in a sequence of nodes linked in both directions.
+class DoubleLinkedList {
 private:
   Node<T> *head;
   Node<T> *tail;
   int length;
 
-  // Time: O(1), Space: O(1)
-  // Links two nodes by setting next and previous pointers
+  // Connects two neighboring nodes in the list.
   void link(Node<T> *first, Node<T> *second) {
     if (first)
       first->next = second;
@@ -48,8 +48,7 @@ private:
       second->previous = first;
   }
 
-  // Time: O(1), Space: O(1)
-  // Removes node from list by linking its neighbors
+  // Removes a node and reconnects its neighboring nodes.
   Node<T> *delete_and_link(Node<T> *node) {
     Node<T> *ret = node->previous;
     link(node->previous, node->next);
@@ -57,29 +56,37 @@ private:
     return ret;
   }
 
-  // Time: O(1), Space: O(1)
+  // Deletes a node and updates the list length.
   void delete_node(Node<T> *node) {
     delete node;
     --length;
   }
 
-public:
-  // Time: O(1), Space: O(1)
-  ShawarebDoubleLinkedList() : head(nullptr), tail(nullptr), length(0) {}
+  // Deletes all nodes and resets the list to an empty state.
+  void clear() {
+    while (head) {
+      Node<T> *next = head->next;
+      delete_node(head);
+      head = next;
+    }
+    tail = nullptr;
+  }
 
-  // Time: O(m), Space: O(m) // m->otherList length
-  // Copy constructor
-  ShawarebDoubleLinkedList(const ShawarebDoubleLinkedList<T> &otherList)
+public:
+  // Creates an empty doubly linked list.
+  DoubleLinkedList() : head(nullptr), tail(nullptr), length(0) {}
+
+  // Creates a deep copy of another doubly linked list.
+  DoubleLinkedList(const DoubleLinkedList<T> &otherList)
       : head(nullptr), tail(nullptr), length(0) {
     for (Node<T> *current = otherList.head; current; current = current->next) {
       insert_end(current->data);
     }
   }
 
-  // Time: O(n+m), Space: O(m) // m->otherList length
-  // Assignment operator with self-assignment check
-  ShawarebDoubleLinkedList &
-  operator=(const ShawarebDoubleLinkedList<T> &otherList) {
+  // Replaces this list with a deep copy of another doubly linked list.
+  DoubleLinkedList &
+  operator=(const DoubleLinkedList<T> &otherList) {
     if (&otherList == this)
       return *this;
     clear();
@@ -89,7 +96,7 @@ public:
     return *this;
   }
 
-  // Time: O(1), Space: O(1)
+  // Adds a new value to the end of the list.
   void insert_end(const T &value) {
     Node<T> *new_node = new Node<T>(value);
 
@@ -102,7 +109,7 @@ public:
     ++length;
   }
 
-  // Time: O(1), Space: O(1)
+  // Adds a new value to the beginning of the list.
   void insert_front(const T &value) {
     Node<T> *new_node = new Node<T>(value);
 
@@ -115,8 +122,7 @@ public:
     ++length;
   }
 
-  // Time: O(n), Space: O(1)
-  // Inserts value at correct sorted position. Requires: list must be sorted
+  // Inserts a value into its correct position in a sorted list.
   void insert_sorted(const T &value) {
     if (!length) {
       insert_end(value);
@@ -131,20 +137,19 @@ public:
       return;
     }
 
-    // Find correct position for new value
     for (Node<T> *current = head; current; current = current->next) {
       if (value >= current->data && value <= current->next->data) {
         Node<T> *new_node = new Node<T>(value);
         Node<T> *next = current->next;
         link(current, new_node);
         link(new_node, next);
+        ++length;
         break;
       }
     }
-    ++length;
   }
 
-  // Time: O(1), Space: O(1)
+  // Removes the first node from the list.
   void delete_front() {
     if (!head)
       return;
@@ -159,7 +164,7 @@ public:
     }
   }
 
-  // Time: O(1), Space: O(1)
+  // Removes the last node from the list.
   void delete_end() {
     if (!head)
       return;
@@ -174,7 +179,7 @@ public:
     }
   }
 
-  // Time: O(n), Space: O(1)
+  // Removes the first node containing the specified value.
   void delete_with_key(const T &value) {
     if (!head)
       return;
@@ -193,7 +198,7 @@ public:
     }
   }
 
-  // Time: O(n), Space: O(1)
+  // Prints all values from the beginning to the end of the list.
   void print() {
     for (Node<T> *current = head; current; current = current->next) {
       cout << current->data << " ";
@@ -201,18 +206,17 @@ public:
     cout << endl;
   }
 
-  // Time: O(n), Space: O(1)
-  void clear() {
-    while (head) {
-      Node<T> *next = head->next;
-      delete_node(head);
-      head = next;
-    }
-    tail = nullptr;
+  // Returns true when the list contains no nodes.
+  bool is_empty() const {
+    return head == nullptr;
   }
 
-  // Time: O(n), Space: O(1)
-  // Destructor - deallocates all nodes
-  ~ShawarebDoubleLinkedList() { clear(); }
+  // Returns the number of nodes currently stored in the list.
+  int get_size() const {
+    return length;
+  }
+
+  // Releases all nodes owned by the list.
+  ~DoubleLinkedList() { clear(); }
 };
 #endif
