@@ -1,50 +1,44 @@
 /**
  * ---------------------------------------------------------------------------*
- * | File Name   : ShawarebVector.h                                          |*
+ * | File Name   : DynamicArray.h                                            |*
  * |                                                                         |* 
  * | Author      : Ahmed Shawareb                                            |*
  * |                                                                         |* 
  * | Email       : eng.ahmedshawareb@gmail.com                               |*
  * |                                                                         |*
- * | Description : Vector implementation for Data Structures.                |*
+ * | Description : Dynamic Array(vector) implementation for Data Structures. |*
  * ---------------------------------------------------------------------------*
 **/
 
-#ifndef SHAWAREB_VECTOR_H
-#define SHAWAREB_VECTOR_H
+#ifndef DYNAMIC_ARRAY_H
+#define DYNAMIC_ARRAY_H
 
 #include <algorithm>
 #include <cassert>
 using namespace std;
 
 template <class T>
-// Dynamic array implementation with automatic capacity management
-class ShawarebVector {
+class DynamicArray {
 private:
   int size = 0;
   int capacity = 4;
   T *arr = nullptr;
 
-  // Time: O(n), Space: O(n)
-  // Doubles capacity and reallocates storage when full
+  // Increases the storage capacity and copies the existing elements.
   void expand_capacity() {
     capacity *= 2;
     T *arr2 = new T[capacity];
-    for (int i = 0; i < size; ++i) {
-      arr2[i] = arr[i];
-    }
-    swap(arr, arr2);
-    delete[] arr2;
+    for (int i = 0; i < size; ++i) arr2[i] = arr[i];
+    delete[] arr;
+    arr = arr2;
   }
 
 public:
-  // Time: O(1), Space: O(1)
-  // Default constructor initializes with capacity of 4
-  ShawarebVector() { arr = new T[capacity]; }
+  // Creates an empty dynamic array with an initial capacity of four elements.
+  DynamicArray() { arr = new T[capacity]; }
 
-  // Time: O(1), Space: O(1)
-  // Constructor that sets initial size with extra capacity
-  ShawarebVector(int size) : size(size) {
+  // Creates a dynamic array with the requested number of elements.
+  DynamicArray(int size) : size(size) {
     if (this->size <= 0)
       this->size = 1;
 
@@ -52,20 +46,30 @@ public:
     arr = new T[capacity];
   }
 
-  // Time: O(n), Space: O(n)
-  // Copy constructor creates deep copy of another vector
-  ShawarebVector(const ShawarebVector &other) {
-    size = other.size;
-    capacity = other.capacity;
+  // Creates a deep copy of another dynamic array.
+  DynamicArray(const DynamicArray<T> &other) {
+    this->size = other.size;
+    this->capacity = other.capacity;
     arr = new T[capacity];
     for (int i = 0; i < size; ++i) {
-      arr[i] = other.arr[i];
+      this->arr[i] = other.arr[i];
     }
   }
 
-  // Time: O(n), Space: O(1)
-  // Assignment operator with self-assignment check
-  ShawarebVector &operator=(const ShawarebVector &other) {
+  // Releases the memory used by the dynamic array.
+  ~DynamicArray() {
+    delete[] arr;
+    arr = nullptr;
+  }
+
+  // Returns a modifiable reference to the element at the specified index.
+  T &operator[](const int index) {
+    assert(index >= 0 && index < size);
+    return arr[index];
+  }
+
+  // Replaces this array with a deep copy of another dynamic array.
+  DynamicArray &operator=(const DynamicArray<T> &other) {
     if (this == &other)
       return *this;
     delete[] arr;
@@ -79,23 +83,22 @@ public:
     return *this;
   }
 
-  // Time: O(1), Space: O(1)
+  // Returns the number of elements currently stored in the array.
   int get_size() const { return size; }
 
-  // Time: O(1), Space: O(1)
+  // Returns the element at the specified index.
   T get(const int &index) const {
     assert(index >= 0 && index < size);
     return arr[index];
   }
 
-  // Time: O(1), Space: O(1)
+  // Updates the element at the specified index with a new value.
   void set(const int &index, const T &value) {
     assert(index >= 0 && index < size);
     arr[index] = value;
   }
 
-  // Time: O(n), Space: O(1)
-  // Shifts elements right to make room for new value
+  // Inserts a value at the specified index and shifts later elements right.
   void insert(const int &index, const T &value) {
     assert(index >= 0 && index <= size);
     if (size == capacity)
@@ -108,27 +111,33 @@ public:
     ++size;
   }
 
-  // Time: O(1), Space: O(1)
+  // Adds a value to the end of the array.
   void push_back(const T &value) {
     if (size == capacity)
       expand_capacity();
     arr[size++] = value;
   }
 
-  // Time: O(1), Space: O(1)
-  T get_front() const { return arr[0]; }
+  // Returns the first element in the array.
+  T get_front() const {
+    assert(size > 0);
+    return arr[0];
+  }
 
-  // Time: O(1), Space: O(1)
-  T get_back() const { return arr[size - 1]; }
+  // Returns the last element in the array.
+  T get_back() const {
+    assert(size > 0);
+    return arr[size - 1];
+  }
 
-  // Time: O(1), Space: O(1)
+  // Removes the last element from the array.
   void pop_back() {
     assert(size > 0);
     --size;
   }
 
-  // Time: O(n), Space: O(1)
-  // Returns 0-based index of first match, or -1 if not found
+  // Finds and returns the index of the first matching value.
+  // Returns -1 when the value is not found.
   int find(const T &value) const {
     for (int i = 0; i < size; ++i) {
       if (arr[i] == value)
@@ -137,18 +146,10 @@ public:
     return -1;
   }
 
-  // Time: O(1), Space: O(1)
+  // Returns true when the array contains no elements.
   bool is_empty() const { return (size == 0); }
 
-  // Time: O(1), Space: O(1)
-  // Subscript operator returns reference for direct element access
-  T &operator[](const int index) {
-    assert(index >= 0 && index < size);
-    return arr[index];
-  }
-
-  // Time: O(n), Space: O(1)
-  // Shifts elements left to fill gap at erased position
+  // Removes the element at the specified index and shifts later elements left.
   void erase(const int &index) {
     assert(index >= 0 && index < size);
     for (int i = index; i < size - 1; ++i) {
@@ -157,12 +158,6 @@ public:
     --size;
   }
 
-  // Time: O(1), Space: O(1)
-  // Destructor deallocates dynamic array
-  ~ShawarebVector() {
-    delete[] arr;
-    arr = nullptr;
-  }
 };
 
 #endif
