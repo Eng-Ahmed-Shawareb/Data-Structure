@@ -1,44 +1,45 @@
 /**
  * ---------------------------------------------------------------------------*
- * | File Name   : ShawarebStackLinkedListBased.h                            |*
+ * | File Name   : StackLinkedList.h                                         |*
  * |                                                                         |* 
  * | Author      : Ahmed Shawareb                                            |*
  * |                                                                         |* 
  * | Email       : eng.ahmedshawareb@gmail.com                               |*
  * |                                                                         |*
- * | Description : Stack implementation for Data Structures.                 |*
+ * | Description : Stack implementation for Data Structures (linked list).   |*
  * ---------------------------------------------------------------------------*
 **/
 
-#ifndef SHAWAREB_STACK_LINKED_LIST_BASED_H
-#define SHAWAREB_STACK_LINKED_LIST_BASED_H
+#ifndef STACK_LINKED_LIST_H
+#define STACK_LINKED_LIST_H
 
 #include <cassert>
 #include <iostream>
 using namespace std;
 
 template <typename T>
-// Node for stack linked list
+// Represents a single node in the linked-list stack.
 class Node {
 public:
   T data;
   Node<T> *next;
+  // Creates a node containing the provided value.
   Node(const T &d) : data(d) { next = nullptr; }
+  // Displays information when the node is destroyed.
   ~Node() {
     cout << "Destroy value: " << data << "at address: " << this << endl;
   }
 };
 
 template <typename T>
-// Stack implemented using linked list (LIFO - Last In First Out)
-class ShawarebStackLinkedListBased {
+// Implements a stack using a singly linked list.
+class StackLinkedList {
 private:
   Node<T> *head;
   int length;
 
-  // Time: O(n), Space: O(n)
-  // Deep copies nodes from another stack
-  void copy_from(const ShawarebStackLinkedListBased &other) {
+  // Copies all nodes from another stack into this one.
+  void copy(const StackLinkedList &other) {
     if (other.head == nullptr) {
       head = nullptr;
       length = 0;
@@ -58,8 +59,7 @@ private:
     length = other.length;
   }
 
-  // Time: O(n), Space: O(1)
-  // Deallocates all nodes in the stack
+  // Removes all nodes and resets the stack to an empty state.
   void clear() {
     while (head) {
       Node<T> *temp = head;
@@ -70,31 +70,28 @@ private:
   }
 
 public:
-  // Time: O(1), Space: O(1)
-  ShawarebStackLinkedListBased() : head(nullptr), length(0) {}
+  // Creates an empty stack.
+  StackLinkedList() : head(nullptr), length(0) {}
 
-  // Time: O(n), Space: O(n)
-  // Copy constructor
-  ShawarebStackLinkedListBased(const ShawarebStackLinkedListBased &other) {
-    copy_from(other);
+  // Creates a copy of another stack.
+  StackLinkedList(const StackLinkedList &other) {
+    copy(other);
   }
 
-  // Time: O(n), Space: O(1)
-  // Assignment operator with self-assignment check
-  ShawarebStackLinkedListBased &
-  operator=(const ShawarebStackLinkedListBased &other) {
+  // Replaces this stack with a copy of another stack.
+  StackLinkedList &
+  operator=(const StackLinkedList &other) {
     if (this != &other) {
       clear();
-      copy_from(other);
+      copy(other);
     }
     return *this;
   }
 
-  // Time: O(n), Space: O(1)
-  // Destructor - deallocates all nodes
-  ~ShawarebStackLinkedListBased() { clear(); }
+  // Releases all memory used by the stack.
+  ~StackLinkedList() { clear(); }
 
-  // Time: O(1), Space: O(1)
+  // Adds a value to the top of the stack.
   void push(const T &value) {
     Node<T> *new_node = new Node<T>(value);
     new_node->next = head;
@@ -102,11 +99,10 @@ public:
     ++length;
   }
 
-  // Time: O(1), Space: O(1)
-  bool is_empty() { return !head; }
+  // Returns true when the stack contains no elements.
+  bool is_empty() const { return (!head); }
 
-  // Time: O(1), Space: O(1)
-  // Removes and returns top element from stack
+  // Removes and returns the value at the top of the stack.
   T pop() {
     assert(!is_empty());
 
