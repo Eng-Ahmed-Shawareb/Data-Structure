@@ -1,6 +1,6 @@
 /**
 * ---------------------------------------------------------------------------*
- * | File Name   : ShawarebBinaryTree.h                                      |*
+ * | File Name   : BinaryTree.h                                              |*
  * |                                                                         |*
  * | Author      : Ahmed Shawareb                                            |*
  * |                                                                         |*
@@ -10,8 +10,8 @@
  * ---------------------------------------------------------------------------*
 **/
 
-#ifndef SHAWAREB_BINARY_TREE
-#define SHAWAREB_BINARY_TREE
+#ifndef BINARY_TREE
+#define BINARY_TREE
 
 #include <algorithm>
 #include <iostream>
@@ -21,28 +21,29 @@
 using namespace std;
 
 template<typename T>
-// Node for binary tree with left and right child pointers
+// Stores a value and the left/right child pointers of a binary-tree node.
 struct Node {
     T data{};
     Node<T> *right{};
     Node<T> *left{};
 
+    // Creates a node with the provided value.
     Node(T data) : data(data) {
     }
 
+    // Displays information when the node is destroyed.
     ~Node() {
         cout << "Destroy value: " << data << " at address: " << this << endl;
     }
 };
 
 template<typename T>
-// Binary tree implementation with various traversal operations
-class ShawarebBinaryTree {
+// Represents a binary tree and provides traversal and tree-analysis operations.
+class BinaryTree {
 private:
   Node<T> *root;
 
-  // Time: O(n), Space: O(n)
-  // Recursively copies entire tree structure
+  // Copies the structure and values from another tree into this tree.
   void copy_tree(Node<T> * &copiedTreeRoot, Node<T> *otherTreeRoot) {
         if (!otherTreeRoot) {
             copiedTreeRoot = nullptr;
@@ -54,8 +55,7 @@ private:
         }
     }
 
-  // Time: O(n), Space: O(n)
-  // Recursively deallocates all nodes
+  // Deletes all nodes in the subtree rooted at the given node.
   void destroy(Node<T> * &node) {
         if (!node) return;
 
@@ -65,8 +65,7 @@ private:
         node = nullptr;
     }
 
-  // Time: O(n), Space: O(n)
-  // In-order traversal: left, root, right
+  // Prints the subtree in left-root-right order.
   void inorder(Node<T> *node) const {
         if (!node) return;
         inorder(node->left);
@@ -74,8 +73,7 @@ private:
         inorder(node->right);
     }
 
-  // Time: O(n), Space: O(n)
-  // Pre-order traversal: root, left, right
+  // Prints the subtree in root-left-right order.
   void preorder(Node<T> *node) const {
         if (!node) return;
         cout << node->data << " ";
@@ -83,8 +81,7 @@ private:
         preorder(node->right);
     }
 
-  // Time: O(n), Space: O(n)
-  // Post-order traversal: left, right, root
+  // Prints the subtree in left-right-root order.
   void postorder(Node<T> *node) const {
         if (!node) return;
         postorder(node->left);
@@ -92,14 +89,14 @@ private:
         cout << node->data << " ";
     }
 
-  // Time: O(n), Space: O(n)
+  // Returns the height of the subtree rooted at the given node.
   int height(Node<T> *node) const {
         if (!node) return 0;
 
         return max(height(node->left) + 1, height(node->right) + 1);
     }
 
-  // Time: O(n), Space: O(n)
+  // Counts the leaves in the subtree rooted at the given node.
   int count_leaves(Node<T> *node) const {
         if (!node) return 0;
         if (!node->left && !node->right) return 1;
@@ -107,7 +104,7 @@ private:
         return count_leaves(node->left) + count_leaves(node->right);
     }
 
-  // Time: O(n), Space: O(n)
+  // Counts all nodes in the subtree rooted at the given node.
   int count_nodes(Node<T> *node) const {
         if (!node) return 0;
 
@@ -115,29 +112,26 @@ private:
     }
 
 public:
-  // Time: O(1), Space: O(1)
-  ShawarebBinaryTree(const T &value) {
+  // Creates a binary tree with the given root value.
+  BinaryTree(const T &value) {
         root = new Node<T>(value);
     }
 
-  // Time: O(n), Space: O(n)
-  // Copy constructor
-  ShawarebBinaryTree(const ShawarebBinaryTree<T> &otherTree) {
+  // Creates a deep copy of another binary tree.
+  BinaryTree(const BinaryTree<T> &otherTree) {
         if (!otherTree.root)
             root = nullptr;
         else
             copy_tree(this->root, otherTree.root);
     }
 
-  // Time: O(n), Space: O(1)
-  // Destructor - deallocates all nodes
-  ~ShawarebBinaryTree() {
+  // Deletes all nodes in the tree.
+  ~BinaryTree() {
         destroy(root);
     }
 
-  // Time: O(n), Space: O(1)
-  // Assignment operator with self-assignment check
-  ShawarebBinaryTree &operator=(const ShawarebBinaryTree<T> &otherTree) {
+  // Replaces the current tree with a copy of another tree.
+  BinaryTree &operator=(const BinaryTree<T> &otherTree) {
         if (&otherTree == this) return *this;
         destroy(root);
         copy_tree(root, otherTree.root);
@@ -145,13 +139,12 @@ public:
         return *this;
     }
 
-  // Time: O(1), Space: O(1)
+  // Returns true when the tree contains no nodes.
   bool is_empty() const {
         return root == nullptr;
     }
 
-  // Time: O(m log n), Space: O(n)
-  // Inserts nodes following provided directions and values
+  // Inserts a sequence of values using a path of left/right directions.
   void insert(vector<T> values, vector<char> directions) {
         assert(values.size() == directions.size());
 
@@ -175,32 +168,32 @@ public:
         }
     }
 
-  // Time: O(n), Space: O(n)
+  // Prints the tree using an in-order traversal.
   void inorder_traversal() const {
         inorder(root);
     }
 
-  // Time: O(n), Space: O(n)
+  // Prints the tree using a pre-order traversal.
   void preorder_traversal() const {
         preorder(root);
     }
 
-  // Time: O(n), Space: O(n)
+  // Prints the tree using a post-order traversal.
   void postorder_traversal() const {
         postorder(root);
     }
 
-  // Time: O(n), Space: O(n)
+  // Returns the height of the tree.
   int tree_height() const {
         return height(root);
     }
 
-  // Time: O(n), Space: O(n)
+  // Returns the number of leaves in the tree.
   int tree_leaves_count() const {
         return count_leaves(root);
     }
 
-  // Time: O(n), Space: O(n)
+  // Returns the total number of nodes in the tree.
   int tree_node_count() const {
         return count_nodes(root);
     }

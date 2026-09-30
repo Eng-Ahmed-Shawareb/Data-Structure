@@ -109,6 +109,18 @@ public:
     ++length;
   }
 
+  //Return the first element in the linked list.
+  T get_front() const {
+    assert(!is_empty());
+    return head->data;
+  }
+
+  //Return the last element in the linked list.
+  T get_back() const {
+    assert(!is_empty());
+    return tail->data;
+  }
+
   // Inserts a value into its correct position in a sorted list.
   void insert_sorted(const T &value) {
     if (length == 0) {
@@ -203,7 +215,6 @@ public:
 
     if (n == 1) {
       delete_front();
-  // Removes the first node containing the specified value.
       return;
     }
 
